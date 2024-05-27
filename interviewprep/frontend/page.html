@@ -4,18 +4,186 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Interview Chatbot</title>
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f8ff;
+            color: #333;
+            background-image: url('https://github.com/sastava007/Tech-Interview-Preparation/blob/master/Images/Interview.png?raw=true');
+            background-size: cover;
+            background-position: center;
+        }
+
+        header, footer {
+            background-color: rgba(76, 175, 80, 0.9);
+            color: #fff;
+            text-align: center;
+            padding: 1rem;
+            position: relative;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .form-group button {
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .form-group button:hover {
+            background-color: #45a049;
+        }
+
+        #interview-questions h2 {
+            margin-bottom: 1rem;
+        }
+
+        #interview-questions ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        #interview-questions ul li {
+            background: #f9f9f9;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            margin-bottom: 1rem;
+            border-radius: 4px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .error {
+            color: red;
+            margin-top: 0.5rem;
+        }
+
+        .help-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #fff;
+            color: #4CAF50;
+            border: 2px solid #4CAF50;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .help-btn:hover {
+            background-color: #4CAF50;
+            color: #fff;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1rem 0;
+            background-color: rgba(76, 175, 80, 0.9);
+            color: #fff;
+            margin-top: 20px;
+        }
+
+        .footer-content {
+            margin-bottom: 1rem;
+        }
+    </style>
 </head>
 <body>
     <header>
         <h1>Interview Chatbot</h1>
+        <button class="help-btn" onclick="alert('For assistance, contact support@interviewchatbot.com')">Help</button>
     </header>
 
-    <div class="container">
+    <div class="container" id="registration-container">
+        <section id="registration-section">
+            <h2>Register</h2>
+            <div class="form-group">
+                <label for="reg-username">Username</label>
+                <input type="text" id="reg-username" placeholder="Enter your username">
+                <span class="error hidden" id="reg-username-error">Username is required</span>
+            </div>
+            <div class="form-group">
+                <label for="reg-password">Password</label>
+                <input type="password" id="reg-password" placeholder="Enter your password">
+                <span class="error hidden" id="reg-password-error">Password is required</span>
+            </div>
+            <div class="form-group">
+                <label for="reg-type">User Type</label>
+                <select id="reg-type">
+                    <option value="interviewee">Interviewee</option>
+                    <option value="interviewer">Interviewer</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <button id="register-btn">Register</button>
+            </div>
+        </section>
+    </div>
+
+    <div class="container hidden" id="login-container">
+        <section id="login-section">
+            <h2>Login</h2>
+            <div class="form-group">
+                <label for="login-username">Username</label>
+                <input type="text" id="login-username" placeholder="Enter your username">
+                <span class="error hidden" id="login-username-error">Username is required</span>
+            </div>
+            <div class="form-group">
+                <label for="login-password">Password</label>
+                <input type="password" id="login-password" placeholder="Enter your password">
+                <span class="error hidden" id="login-password-error">Password is required</span>
+            </div>
+            <div class="form-group">
+                <button id="login-btn">Login</button>
+            </div>
+        </section>
+    </div>
+
+    <div class="container hidden" id="chatbot-container">
         <section id="input-section">
             <div class="form-group">
                 <label for="resume">Resume</label>
-                <textarea id="resume" rows="5" placeholder="Paste the resume here..."></textarea>
+                <input type="file" id="resume" accept=".pdf,.doc,.docx,.txt">
             </div>
             <div class="form-group">
                 <label for="job-description">Job Description</label>
@@ -35,9 +203,123 @@
     </div>
 
     <footer>
-        <p>&copy; 2024 Interview Chatbot. All rights reserved.</p>
+        <div class="footer-content">
+            <p>&copy; 2024 Interview Chatbot. All rights reserved.</p>
+            <p>Contact us at: <a href="mailto:support@interviewchatbot.com">support@interviewchatbot.com</a></p>
+        </div>
     </footer>
 
-    <script src="script.js"></script>
+    <script>
+        const users = [];
+
+        document.getElementById('register-btn').addEventListener('click', function() {
+            const username = document.getElementById('reg-username').value.trim();
+            const password = document.getElementById('reg-password').value.trim();
+            const userType = document.getElementById('reg-type').value;
+
+            if (username && password) {
+                users.push({ username: username.toLowerCase(), password, userType });
+                alert('Registration successful!');
+                document.getElementById('registration-container').classList.add('hidden');
+                document.getElementById('login-container').classList.remove('hidden');
+            } else {
+                document.getElementById('reg-username-error').classList.toggle('hidden', !!username);
+                document.getElementById('reg-password-error').classList.toggle('hidden', !!password);
+            }
+        });
+
+        document.getElementById('login-btn').addEventListener('click', function() {
+            const username = document.getElementById('login-username').value.trim().toLowerCase();
+            const password = document.getElementById('login-password').value.trim();
+
+            const user = users.find(u => u.username === username && u.password === password);
+
+            if (user) {
+                alert('Login successful!');
+                document.getElementById('login-container').classList.add('hidden');
+                document.getElementById('chatbot-container').classList.remove('hidden');
+            } else {
+                document.getElementById('login-username-error').classList.toggle('hidden', !!username);
+                document.getElementById('login-password-error').classList.toggle('hidden', !!password);
+                if (username && password) {
+                    alert('Invalid username or password.');
+                }
+            }
+        });
+
+        document.getElementById('generate-btn').addEventListener('click', function() {
+            const resumeInput = document.getElementById('resume');
+            const jobDescription = document.getElementById('job-description').value.trim();
+
+            if (resumeInput.files.length > 0 && jobDescription) {
+                const resumeFile = resumeInput.files[0];
+                const reader = new FileReader();
+
+                reader.onload = function(event) {
+                    const resumeText = event.target.result;
+                    const questions = generateQuestions(resumeText, jobDescription);
+                    displayQuestions(questions);
+                };
+
+                if (resumeFile.type === "application/pdf") {
+                    reader.readAsBinaryString(resumeFile);
+                } else {
+                    reader.readAsText(resumeFile);
+                }
+            } else {
+                alert('Please provide both the resume and job description.');
+            }
+        });
+
+        function generateQuestions(resume, jobDescription) {
+            // Advanced logic for generating questions with sample answers
+            const questions = [
+                {
+                    question: "Tell me about yourself.",
+                    answer: "I am a software developer with 5 years of experience in full-stack development. I have worked on various projects using technologies like React, Node.js, and Python. I am passionate about learning new technologies and improving my skills."
+                },
+                {
+                    question: "What are your strengths and weaknesses?",
+                    answer: "My strengths include strong problem-solving skills, effective communication, and the ability to work well in a team. One of my weaknesses is that I can be a perfectionist, which sometimes leads to spending more time on tasks than necessary. However, I am working on managing my time better."
+                },
+                {
+                    question: "How do your skills align with the requirements in the job description?",
+                    answer: "My skills in React and Node.js directly align with the requirements for this role. I have successfully implemented several projects using these technologies, which demonstrates my ability to meet the job requirements effectively."
+                },
+                {
+                    question: "Can you tell us more about your experience in your previous job?",
+                    answer: "In my previous job, I worked as a full-stack developer where I led a team of developers to create scalable web applications. We used agile methodologies to manage our projects and ensure timely delivery of high-quality software."
+                },
+                {
+                    question: "Can you describe a project where you applied relevant skills?",
+                    answer: "In one of my projects, I used my JavaScript skills to develop a real-time chat application. This project involved using WebSocket for real-time communication and implementing a responsive UI with React."
+                },
+                {
+                    question: "Why are you interested in this role based on your resume?",
+                    answer: "I am interested in this role because it aligns with my career goals and expertise. The opportunity to work with advanced technologies and contribute to innovative projects excites me. Additionally, I admire the company's commitment to continuous learning and professional development."
+                },
+                {
+                    question: "Why should we hire you?",
+                    answer: "You should hire me because I have a proven track record of delivering high-quality software solutions. My skills, experience, and enthusiasm for technology make me a strong candidate for this role. I am eager to bring my unique perspective and contribute to the team's success."
+                },
+                {
+                    question: "Where do you see yourself in the next 5 years?",
+                    answer: "In the next 5 years, I see myself in a leadership role where I can mentor junior developers and lead projects. I also aim to continuously expand my knowledge and stay updated with the latest industry trends."
+                }
+            ];
+            return questions;
+        }
+
+        function displayQuestions(questions) {
+            const questionsList = document.getElementById('questions-list');
+            questionsList.innerHTML = ''; // Clear existing questions
+            questions.forEach(q => {
+                const li = document.createElement('li');
+                li.innerHTML = `<strong>Q:</strong> ${q.question}<br><strong>A:</strong> ${q.answer}`;
+                questionsList.appendChild(li);
+            });
+        }
+    </script>
 </body>
 </html>
+
